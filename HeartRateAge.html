@@ -1,0 +1,258 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Age and Heart Rate Evaluation</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-09-02"><meta name="DC.source" content="MontejoHeartRate.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Age and Heart Rate Evaluation</h1><!--introduction--><p>Problem developed as a practice exercise and is not meant to imply any official results.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Authorship</a></li><li><a href="#2">Introduction</a></li><li><a href="#3">Memory Clearance</a></li><li><a href="#4">Data Gathering</a></li><li><a href="#5">Red Line</a></li><li><a href="#6">Anaerobic</a></li><li><a href="#7">Aerobic</a></li><li><a href="#8">Energy Efficient/Recovery</a></li><li><a href="#9">Healthy Heart</a></li><li><a href="#10">User Input</a></li><li><a href="#11">Decisions &amp; Parameter Evaluation</a></li><li><a href="#12">Conclusion</a></li></ul></div><h2>Authorship<a name="1"></a></h2><p>Christian J. Lagares Nieves</p><p>Undergraduate Student Researcher</p><p>Bubble Dynamics Laboratory</p><p>University of Puerto Rico, Mayaguez</p><h2>Introduction<a name="2"></a></h2><p>Every person in the world should exercise, at least, to a certain degree. We were tasked with the objective of writing a program that could identify the percent of max heart rate the person is currently using. This was achived through the implementation of linear functions that defined the boundaries of certain percentage regions. Each function has been extrapolated from the available graphics. Although we defined both top and lower boundaries, we will only employ the higher boundaries for our analysis. (These should be given emphasis in the final analysis.) In order to account for <i>out of sample errors</i>, we assigned an extra category which accounts for BPM theoretically above 100% or extremely near the limit of the highest linear function defined.</p><h2>Memory Clearance<a name="3"></a></h2><p>These instructions will clear the Matlab memory buffer, close figures or graphs and clear the console (Command Window).</p><pre class="codeinput">clc; clear; close;
+</pre><h2>Data Gathering<a name="4"></a></h2><p>We will first define the parameters needed to classify BPM and Age in accordance to the % of Max Heart Rate.</p><h2>Red Line<a name="5"></a></h2><p>The HighRedLine is a pointer for a function of Age that defines the top limit for the red line zone. m = -1</p><pre class="codeinput">HighRedLine = @(Age) ((205-135)/(15-85))*Age + 205;
+
+<span class="comment">% The LowRedLine is a pointer for a function of Age that defines the lower</span>
+<span class="comment">% limit for the red line zone. m = -6/7</span>
+
+LowRedLine = @(Age) ((185-125)/(15-85))*Age + 125;
+</pre><h2>Anaerobic<a name="6"></a></h2><p>The HighAnaerobic is a pointer for a function of Age that defines the high limit for the Anaerobic Zone. m = -6/7</p><pre class="codeinput">HighAnaerobic = @(Age) ((185-125)/(15-85))*Age + 125;
+
+<span class="comment">% The LowAnaerobic is a pointer for a function of Age that defines the</span>
+<span class="comment">% low limit for the Anaerobic Zone. m = -11/14</span>
+
+LowAnaerobic = @(Age) ((165-110)/(15-85))*Age + 165;
+</pre><h2>Aerobic<a name="7"></a></h2><p>The HighAerobic is a pointer for a function of Age that defines the high limit for the Aerobic Zone. m = -11/14</p><pre class="codeinput">HighAerobic = @(Age) ((165-110)/(15-85))*Age + 165;
+
+<span class="comment">% The LowAerobic is a pointer for a function of Age that defines the</span>
+<span class="comment">% low limit for the Aerobic Zone. m = -5/7</span>
+
+LowAerobic = @(Age) ((145-95)/(15-85))*Age + 145;
+</pre><h2>Energy Efficient/Recovery<a name="8"></a></h2><p>The HighEnergy is a pointer for a function of Age that defines the high limit for the Energy Efficient/Recovery Zone. m = -5/7</p><pre class="codeinput">HighEnergy = @(Age) ((145-95)/(15-85))*Age + 145;
+
+<span class="comment">% The LowEnergy is a pointer for a function of Age that defines the</span>
+<span class="comment">% low limit for the Energy Efficient/Recovery Zone. m = -9/14</span>
+
+LowEnergy = @(Age) ((125-80)/(15-85))*Age + 125;
+</pre><h2>Healthy Heart<a name="9"></a></h2><p>The HighHealthy is a pointer for a function of Age that defines the high limit for the Healthy Heart Zone. m = -9/14</p><pre class="codeinput">HighHealthy = @(Age) ((125-80)/(15-85))*Age + 125;
+
+<span class="comment">% The LowHealthy is a pointer for a function of Age that defines the</span>
+<span class="comment">% low limit for the Healthy Heart Zone. m = -1/2</span>
+
+LowHealthy = @(Age) ((105-70)/(15-85))*Age + 125;
+</pre><h2>User Input<a name="10"></a></h2><p>The instructions request that the user inputs specific parameters to calculate results. These parameters are BPM and Age.</p><p>The input function prints the statement and takes the value of the User-Inputed Integer. For this specific program, or version of the program, I removed the input function call and assigned the validation values directly through a 1 by 4 array for <i>Age</i> and <i>BPM</i>.</p><pre class="codeinput">Age = [70,50,21,21];
+
+BPM = [90,143,80,220];
+</pre><h2>Decisions &amp; Parameter Evaluation<a name="11"></a></h2><p>We will use selection structures in order to compare the equations developed in a previous section. The selection process will be based on a comparison of the independent value 'Age' vs the provided BPM value.</p><pre class="codeinput"><span class="keyword">for</span> ii=1:4
+    fprintf(<span class="string">'For %2.0f years and %2.0f BPM, \n'</span>,Age(ii), BPM(ii))
+    <span class="keyword">if</span> HighHealthy(Age(ii)) &gt; BPM(ii)
+        disp(<span class="string">'Your heart is running at 50-60% of max heart rate.'</span>)
+    <span class="keyword">elseif</span> HighEnergy(Age(ii)) &gt; BPM(ii)
+        disp(<span class="string">'Your heart is running at 60-70% of max heart rate.'</span>)
+    <span class="keyword">elseif</span> HighAerobic(Age(ii)) &gt; BPM(ii)
+        disp(<span class="string">'Your heart is running at 70-80% of max heart rate.'</span>)
+    <span class="keyword">elseif</span> HighAnaerobic(Age(ii)) &gt; BPM(ii)
+        disp(<span class="string">'Your heart is running at 80-90% of max heart rate.'</span>)
+    <span class="keyword">elseif</span> HighRedLine(Age(ii)) &gt; BPM(ii)
+        disp(<span class="string">'Your heart is running at 90-100% of max heart rate.'</span>)
+    <span class="keyword">else</span>
+        disp(<span class="string">'Your heart is running at 90-100% of max heart rate, or higher!'</span>)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">For 70 years and 90 BPM, 
+Your heart is running at 60-70% of max heart rate.
+For 50 years and 143 BPM, 
+Your heart is running at 90-100% of max heart rate.
+For 21 years and 80 BPM, 
+Your heart is running at 50-60% of max heart rate.
+For 21 years and 220 BPM, 
+Your heart is running at 90-100% of max heart rate, or higher!
+</pre><h2>Conclusion<a name="12"></a></h2><p>This program validates the function with an error rate below 95%. The 5% accounts for errors in slope calculations due to innacurate graphical analysis.</p><p><i>All-Rights Reserved Christian J. Lagares</i></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Age and Heart Rate Evaluation
+% Problem developed as a practice exercise and is not meant to imply any
+% official results.
+%% Authorship
+% Christian J. Lagares Nieves   
+%
+% Undergraduate Student Researcher   
+%
+% Bubble Dynamics Laboratory  
+%
+% University of Puerto Rico, Mayaguez   
+
+%% Introduction
+% Every person in the world should exercise, at least, to a certain degree.
+% We were tasked with the objective of writing a program that could
+% identify the percent of max heart rate the person is currently using.
+% This was achived through the implementation of linear functions that
+% defined the boundaries of certain percentage regions. Each function has
+% been extrapolated from the available graphics. Although we defined both
+% top and lower boundaries, we will only employ the higher boundaries for
+% our analysis. (These should be given emphasis in the final analysis.) In
+% order to account for _out of sample errors_, we assigned an extra
+% category which accounts for BPM theoretically above 100% or extremely
+% near the limit of the highest linear function defined.
+
+%% Memory Clearance
+% These instructions will clear the Matlab memory buffer, close figures or
+% graphs and clear the console (Command Window).
+clc; clear; close;
+
+%% Data Gathering
+% We will first define the parameters needed to classify BPM and Age in
+% accordance to the % of Max Heart Rate.
+%%% Red Line 
+% The HighRedLine is a pointer for a function of Age that defines the top
+% limit for the red line zone. m = -1
+
+HighRedLine = @(Age) ((205-135)/(15-85))*Age + 205;
+
+% The LowRedLine is a pointer for a function of Age that defines the lower
+% limit for the red line zone. m = -6/7
+
+LowRedLine = @(Age) ((185-125)/(15-85))*Age + 125;
+
+%%% Anaerobic
+% The HighAnaerobic is a pointer for a function of Age that defines the
+% high limit for the Anaerobic Zone. m = -6/7
+
+HighAnaerobic = @(Age) ((185-125)/(15-85))*Age + 125;
+
+% The LowAnaerobic is a pointer for a function of Age that defines the
+% low limit for the Anaerobic Zone. m = -11/14
+
+LowAnaerobic = @(Age) ((165-110)/(15-85))*Age + 165;
+
+%%% Aerobic 
+% The HighAerobic is a pointer for a function of Age that defines the
+% high limit for the Aerobic Zone. m = -11/14
+
+HighAerobic = @(Age) ((165-110)/(15-85))*Age + 165;
+
+% The LowAerobic is a pointer for a function of Age that defines the
+% low limit for the Aerobic Zone. m = -5/7
+
+LowAerobic = @(Age) ((145-95)/(15-85))*Age + 145;
+
+%%% Energy Efficient/Recovery
+% The HighEnergy is a pointer for a function of Age that defines the
+% high limit for the Energy Efficient/Recovery Zone. m = -5/7
+
+HighEnergy = @(Age) ((145-95)/(15-85))*Age + 145;
+
+% The LowEnergy is a pointer for a function of Age that defines the
+% low limit for the Energy Efficient/Recovery Zone. m = -9/14
+
+LowEnergy = @(Age) ((125-80)/(15-85))*Age + 125;
+
+%%% Healthy Heart
+% The HighHealthy is a pointer for a function of Age that defines the
+% high limit for the Healthy Heart Zone. m = -9/14
+
+HighHealthy = @(Age) ((125-80)/(15-85))*Age + 125;
+
+% The LowHealthy is a pointer for a function of Age that defines the
+% low limit for the Healthy Heart Zone. m = -1/2
+
+LowHealthy = @(Age) ((105-70)/(15-85))*Age + 125;
+
+%% User Input
+% The instructions request that the user inputs specific parameters to
+% calculate results. These parameters are BPM and Age.
+%
+% The input function prints the statement and takes the value of the
+% User-Inputed Integer. For this specific program, or version of the
+% program, I removed the input function call and assigned the validation
+% values directly through a 1 by 4 array for _Age_ and _BPM_.
+
+Age = [70,50,21,21];
+
+BPM = [90,143,80,220];
+
+%% Decisions & Parameter Evaluation
+% We will use selection structures in order to compare the equations
+% developed in a previous section. The selection process will be based on a
+% comparison of the independent value 'Age' vs the provided BPM value.
+for ii=1:4
+    fprintf('For %2.0f years and %2.0f BPM, \n',Age(ii), BPM(ii))
+    if HighHealthy(Age(ii)) > BPM(ii)
+        disp('Your heart is running at 50-60% of max heart rate.')
+    elseif HighEnergy(Age(ii)) > BPM(ii)
+        disp('Your heart is running at 60-70% of max heart rate.')
+    elseif HighAerobic(Age(ii)) > BPM(ii)
+        disp('Your heart is running at 70-80% of max heart rate.')
+    elseif HighAnaerobic(Age(ii)) > BPM(ii)
+        disp('Your heart is running at 80-90% of max heart rate.')
+    elseif HighRedLine(Age(ii)) > BPM(ii)
+        disp('Your heart is running at 90-100% of max heart rate.')
+    else
+        disp('Your heart is running at 90-100% of max heart rate, or higher!')
+    end
+end
+
+%% Conclusion
+% This program validates the function with an error rate below 95%. The 5%
+% accounts for errors in slope calculations due to innacurate graphical
+% analysis. 
+%
+% _All-Rights Reserved Christian J. Lagares_
+##### SOURCE END #####
+--></body></html>
